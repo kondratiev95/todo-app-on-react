@@ -69,8 +69,6 @@ export class Root extends React.Component {
 
       editTodo = (id, value) => {
         this.setState({ todos: this.state.todos.map(todo => (todo.id === id ? { ...todo, value } : todo))})
-        console.log(id, value)
-        console.log(this.state.todos)
       }
 
       filterCompleted = () => {
