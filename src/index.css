@@ -67,7 +67,6 @@ h1 {
   padding: 20px 20px 20px 25px;
   background-color: white;
   border: 1px solid rgb(238, 238, 238);
-  transition: all 0.5s ease-in;
 }
 
 .default-padding {
@@ -104,7 +103,6 @@ h1 {
   color: tomato;
   font-size: 20px;
   font-weight: bold;
-  transition: all 0.5s ease-in;
 }
 
 .todo-footer {
@@ -148,6 +146,7 @@ h1 {
   font-size: 15px;
   margin-right: 25px;
 }
+
 .clear-completed:focus {
   border: 1px solid black;
   padding: 4px;
@@ -160,17 +159,11 @@ h1 {
 
 .input-edit {
   width: 500px;
-  padding: 15px 10px 15px 15px;
+  padding: 20px 10px 20px 15px;
   margin-left: 50px;
   outline: none;
   border: 1px solid rgb(238, 238, 238);
   box-shadow: 3px 2px 2px rgb(202, 202, 202);
-}
-.edit-item-content {
-  display: none;
-}
-.style-block {
-  display: block;
 }
 
 input[type=checkbox] {
@@ -193,20 +186,12 @@ input[type=checkbox] + label:before {
   transition: all 0.3s ease;
   border-radius: 50%;
 }
+
 input[type=checkbox]:checked + label:before {
   color: rgb(77, 255, 91);
   border-color: rgb(97, 255, 76);
 }
-/* 
-.inline {
-  display: inline-block !important;
-}
-.none {
-  display: none !important;
-}
-.block {
-  display: block !important;
-} */
+
 
 
 
