@@ -3,7 +3,6 @@ import { TodoItem } from './TodoItem';
 
 
 export class ListItem extends React.Component {
-
     render() {
         return(
             <ul className="todo-list">

@@ -166,12 +166,6 @@ h1 {
   border: 1px solid rgb(238, 238, 238);
   box-shadow: 3px 2px 2px rgb(202, 202, 202);
 }
-.edit-item-content {
-  display: none;
-}
-.style-block {
-  display: block;
-}
 
 input[type=checkbox] {
   display: none;
@@ -197,16 +191,6 @@ input[type=checkbox]:checked + label:before {
   color: rgb(77, 255, 91);
   border-color: rgb(97, 255, 76);
 }
-/* 
-.inline {
-  display: inline-block !important;
-}
-.none {
-  display: none !important;
-}
-.block {
-  display: block !important;
-} */
 
 
 
