@@ -2,19 +2,20 @@ import React from "react";
 import { Form } from "./Form";
 import { ListItem } from "./ListItem";
 import { Footer } from "./Footer";
+import { EventEmitter } from "../EventEmmiter";
+
  
 export class Root extends React.Component {
     
       state = {
         newItemValue: '',
         todos: [],
-        counter: 0,
         type: 'all',
         isAllTodosCompleted: false
       }
 
       updateItemValue = newValue => {
-        this.setState({ newItemValue: newValue })
+        this.setState({ newItemValue: newValue }) 
       }
        
       addItem = (e) => {
@@ -24,19 +25,12 @@ export class Root extends React.Component {
             value: this.state.newItemValue,
             completed: false,
           }
-          const todos = [...this.state.todos];
-          todos.push(newItem);
-          this.setState({ todos, newItemValue: ''});
-          
-          console.log(this.state.isAllTodosCompleted)
+          this.setState({ todos: [...this.state.todos, newItem], newItemValue: ''});
         }
       }
     
-      removeItem = (idx) => {
-        console.log(idx)
-        const newTodos = [...this.state.todos];
-        newTodos.splice(idx, 1);
-        this.setState({ todos: newTodos});
+      removeItem = (id) => {
+        this.setState({ todos: this.state.todos.filter(todo => todo.id !== id)});
       }
     
       checkboxHandler = (id) => {
@@ -49,28 +43,33 @@ export class Root extends React.Component {
           } 
           else return item;
         })
-        console.log('newArr', newTodos)
-        this.setState({ todos: newTodos });
-        this.setState({ isAllTodosCompleted: newTodos.every(todoItem => todoItem.completed)})
-        console.log('++++++', this.state.todos)
+        this.setState({ 
+          todos: newTodos, 
+          isAllTodosCompleted: newTodos.every(todoItem => todoItem.completed) 
+        });
       }
 
       updateCounter = () => {
-         let activeTodos = this.state.todos.filter(item => item.completed === false)
-         return activeTodos.length;
+         return this.state.todos.filter(item => item.completed === false).length;
       }
 
       handleAllCompleted = () => {
         this.setState({ isAllTodosCompleted: !this.state.isAllTodosCompleted})
-        if(this.state.isAllTodosCompleted) {
-            this.setState({ todos: this.state.todos.map(item => {
-                return { ...item, completed: false}
-            })})
+        if (this.state.isAllTodosCompleted) {
+          const updatedTodos = this.state.todos.map(item => ({ ...item, completed: false }))
+          this.setState({
+            todos: updatedTodos,
+          })
         } else {
-            this.setState({ todos: this.state.todos.map(item => {
-                return { ...item, completed: true}
-            })})
-        }     
+          const updatedTodos = this.state.todos.map(item => ({ ...item, completed: true }))
+          this.setState({
+            todos: updatedTodos,
+          })
+        }
+      }
+
+      editTodo = (id, value) => {
+        this.setState({ todos: this.state.todos.map(todo => (todo.id === id ? { ...todo, value } : todo))})
       }
 
       filterCompleted = () => {
@@ -86,8 +85,7 @@ export class Root extends React.Component {
       }
 
       deleteCompletedTodo = () => {
-          let removeCompleted = this.state.todos.filter(todo => todo.completed === false);
-          this.setState({ todos: removeCompleted });
+          this.setState({ todos: this.state.todos.filter(todo => todo.completed === false)});
       }
 
       filterTodos = () => {
@@ -115,6 +113,7 @@ export class Root extends React.Component {
                     todos={this.filterTodos()} 
                     checkboxHandler={this.checkboxHandler} 
                     removeItem={this.removeItem}
+                    editTodo={this.editTodo}
                 />
                {
                 this.state.todos.length ? 

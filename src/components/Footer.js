@@ -3,7 +3,7 @@ import React from "react";
 
 export class Footer extends React.Component {
 
-    counter = () => {
+    setAmountOfTodos = () => {
         if(this.props.updateCounter() === 1) {
            return `${this.props.updateCounter()} item left`
         } else {
@@ -15,7 +15,7 @@ export class Footer extends React.Component {
     render() {
         return (
             <div className='todo-footer'>
-                <div className="counter">{this.counter()}</div>
+                <div className="counter">{this.setAmountOfTodos()}</div>
                 <div className="filter-btns">
                     <button onClick={this.props.filterAll}>all</button>
                     <button onClick={this.props.filterActive}>active</button>

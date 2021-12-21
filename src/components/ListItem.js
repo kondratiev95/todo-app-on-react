@@ -1,18 +1,17 @@
 import React from "react";
-import { TodoItem } from './TodoItem';
-
+import { Item } from './Item';
 
 export class ListItem extends React.Component {
     render() {
-        return(
+        return (
             <ul className="todo-list">
-                {this.props.todos.map((task, idx) => (
-                <TodoItem 
+                {this.props.todos.map(task => (
+                <Item 
                   task={task} 
                   key={task.id} 
-                  idx={idx} 
                   removeItem={this.props.removeItem}
                   checkboxHandler={this.props.checkboxHandler}
+                  editTodo={this.props.editTodo}
                 />
               ))}
             </ul>
