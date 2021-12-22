@@ -29,6 +29,10 @@ export class Item extends React.Component {
     onCheckboxChange = () => {
         this.props.checkboxHandler(this.props.task.id);
     } 
+
+    deleteItem = id => {
+        this.props.removeItem(id)
+    }
     
     render() {
         return (
@@ -48,21 +52,26 @@ export class Item extends React.Component {
                 </li>
             ) : (
                 <li className='todo-item'>
+
                     <input 
                         id='item-checkbox'
                         className='input-checkbox'
                         type="checkbox" 
-                        onChange={() => this.props.checkboxHandler(this.props.task.id)} 
+                        onChange={this.onCheckboxChange} 
                         checked={this.props.task.completed}
                     />
-                    <label htmlFor={this.props.task.id} onClick={() => this.props.checkboxHandler(this.props.task.id)}></label>
+
+                    <label htmlFor={this.props.task.id} onClick={this.onCheckboxChange}></label>
+
                     <p 
                         className={this.props.task.completed ? 'todo-content toggle-checkbox' : 'todo-content'}
                         onDoubleClick={this.onDoubleClick}
                     >
                         {this.props.task.value}
                     </p>
-                    <button onClick={() => this.props.removeItem(this.props.task.id)} className='delete'></button>
+
+                    <button onClick={() => this.deleteItem(this.props.task.id)} className='delete'></button>
+                    
                 </li> 
             )
         )

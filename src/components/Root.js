@@ -13,8 +13,8 @@ export class Root extends React.Component {
         isAllTodosCompleted: false
       }
 
-      updateItemValue = newValue => {
-        this.setState({ newItemValue: newValue })
+      updateItemValue = e => {
+        this.setState({ newItemValue: e.target.value })
       }
        
       addItem = (e) => {
@@ -24,19 +24,14 @@ export class Root extends React.Component {
             value: this.state.newItemValue,
             completed: false,
           }
-          const todos = [...this.state.todos];
-          todos.push(newItem);
-          this.setState({ todos, newItemValue: ''});
-          
-          console.log(this.state.isAllTodosCompleted)
+          const newState = { todos: [...this.state.todos, newItem], newItemValue: '' };
+          this.updateState(newState);
         }
       }
     
-      removeItem = (idx) => {
-        console.log(idx)
-        const newTodos = [...this.state.todos];
-        newTodos.splice(idx, 1);
-        this.setState({ todos: newTodos});
+      removeItem = (id) => {
+        const newState = { todos: this.state.todos.filter(todo => todo.id !== id)};
+        this.updateState(newState);
       }
     
       checkboxHandler = (id) => {
@@ -49,45 +44,44 @@ export class Root extends React.Component {
           } 
           else return item;
         })
-        console.log('newArr', newTodos)
-        this.setState({ todos: newTodos });
-        this.setState({ isAllTodosCompleted: newTodos.every(todoItem => todoItem.completed)})
-        console.log('++++++', this.state.todos)
-      }
+        const newState = {
+          todos: newTodos, 
+          isAllTodosCompleted: newTodos.every(todoItem => todoItem.completed),
+        }
+        this.updateState(newState);
+      } 
 
-      updateCounter = () => {
-         let activeTodos = this.state.todos.filter(item => item.completed === false)
-         return activeTodos.length;
+      updateState = (newState) => {
+        const updatedCounter = newState.todos.filter(item => item.completed === false).length
+        this.setState({
+          ...newState,
+          counter: updatedCounter,
+        })
       }
 
       handleAllCompleted = () => {
         this.setState({ isAllTodosCompleted: !this.state.isAllTodosCompleted})
-        if(this.state.isAllTodosCompleted) {
-            this.setState({ todos: this.state.todos.map(item => {
-                return { ...item, completed: false}
-            })})
+        if (this.state.isAllTodosCompleted) {
+          const updatedTodos = this.state.todos.map(item => ({ ...item, completed: false }))
+          const newState = { todos: updatedTodos };
+          this.updateState(newState);
         } else {
-            this.setState({ todos: this.state.todos.map(item => {
-                return { ...item, completed: true}
-            })})
-        }     
+          const updatedTodos = this.state.todos.map(item => ({ ...item, completed: true }))
+          const newState = { todos: updatedTodos }
+          this.updateState(newState);
+        }
       }
 
-      filterCompleted = () => {
-        this.setState({ type: 'completed' })
+      editTodo = (id, value) => {
+        this.setState({ todos: this.state.todos.map(todo => (todo.id === id ? { ...todo, value } : todo))})
       }
-
-      filterAll = () => {
-        this.setState({ type: 'all' })
-      }
-
-      filterActive = () => {
-        this.setState({ type: 'active' })
+ 
+      filterTodosType = e => {
+        this.setState({ type: e.target.getAttribute('data-type')})
       }
 
       deleteCompletedTodo = () => {
-          let removeCompleted = this.state.todos.filter(todo => todo.completed === false);
-          this.setState({ todos: removeCompleted });
+          this.setState({ todos: this.state.todos.filter(todo => todo.completed === false)});
       }
 
       filterTodos = () => {
@@ -115,15 +109,14 @@ export class Root extends React.Component {
                     todos={this.filterTodos()} 
                     checkboxHandler={this.checkboxHandler} 
                     removeItem={this.removeItem}
+                    editTodo={this.editTodo}
                 />
                {
                 this.state.todos.length ? 
                     <Footer 
-                        updateCounter={this.updateCounter}
-                        filterCompleted={this.filterCompleted}
-                        filterAll={this.filterAll}
+                        counter={this.state.counter}
+                        filterTodosType={this.filterTodosType}
                         deleteCompletedTodo={this.deleteCompletedTodo}
-                        filterActive={this.filterActive}
                         todos={this.state.todos}
                     /> : null
                 }

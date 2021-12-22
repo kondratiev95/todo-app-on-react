@@ -1,28 +1,31 @@
 import React from "react";
 
-
 export class Footer extends React.Component {
+    state = {
+        isTodoCompleted: false,
+    }
 
-    counter = () => {
-        if(this.props.updateCounter() === 1) {
-           return `${this.props.updateCounter()} item left`
-        } else {
-           return `${this.props.updateCounter()} items left`
+    componentDidUpdate() {
+        const isCompletedItem = this.props.todos.some(todo => todo.completed)
+        if (this.state.isTodoCompleted !== isCompletedItem) {
+            this.setState({
+                isTodoCompleted: isCompletedItem,
+            })
         }
     }
 
-    
     render() {
+        let { counter } = this.props;
         return (
             <div className='todo-footer'>
-                <div className="counter">{this.counter()}</div>
+                <div className="counter">{`${counter} ${counter === 1 ? 'item' : 'items'} left`}</div>
                 <div className="filter-btns">
-                    <button onClick={this.props.filterAll}>all</button>
-                    <button onClick={this.props.filterActive}>active</button>
-                    <button onClick={this.props.filterCompleted}>completed</button>
+                    <button data-type='all' onClick={this.props.filterTodosType}>all</button>
+                    <button data-type='active' onClick={this.props.filterTodosType}>active</button>
+                    <button data-type='completed' onClick={this.props.filterTodosType}>completed</button>
                 </div>
                 {
-                    this.props.todos.find(todo => todo.completed)
+                    this.state.isTodoCompleted
                     ?   <button 
                             onClick={this.props.deleteCompletedTodo} 
                             className='clear-completed'>
