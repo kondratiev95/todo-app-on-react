@@ -13,8 +13,8 @@ export class Root extends React.Component {
         isAllTodosCompleted: false
       }
 
-      updateItemValue = newValue => {
-        this.setState({ newItemValue: newValue })
+      updateItemValue = e => {
+        this.setState({ newItemValue: e.target.value })
       }
        
       addItem = (e) => {
@@ -24,12 +24,14 @@ export class Root extends React.Component {
             value: this.state.newItemValue,
             completed: false,
           }
-          this.setState({ todos: [...this.state.todos, newItem], newItemValue: ''});
+          const newState = { todos: [...this.state.todos, newItem], newItemValue: '' };
+          this.updateState(newState);
         }
       }
     
       removeItem = (id) => {
-        this.setState({ todos: this.state.todos.filter(todo => todo.id !== id)});
+        const newState = { todos: this.state.todos.filter(todo => todo.id !== id)};
+        this.updateState(newState);
       }
     
       checkboxHandler = (id) => {
@@ -42,45 +44,40 @@ export class Root extends React.Component {
           } 
           else return item;
         })
-        this.setState({ 
+        const newState = {
           todos: newTodos, 
-          isAllTodosCompleted: newTodos.every(todoItem => todoItem.completed) 
-        });
-      }
+          isAllTodosCompleted: newTodos.every(todoItem => todoItem.completed),
+        }
+        this.updateState(newState);
+      } 
 
-      updateCounter = () => {
-         return this.state.todos.filter(item => item.completed === false).length;
+      updateState = (newState) => {
+        const updatedCounter = newState.todos.filter(item => item.completed === false).length
+        this.setState({
+          ...newState,
+          counter: updatedCounter,
+        })
       }
 
       handleAllCompleted = () => {
         this.setState({ isAllTodosCompleted: !this.state.isAllTodosCompleted})
         if (this.state.isAllTodosCompleted) {
           const updatedTodos = this.state.todos.map(item => ({ ...item, completed: false }))
-          this.setState({
-            todos: updatedTodos,
-          })
+          const newState = { todos: updatedTodos };
+          this.updateState(newState);
         } else {
           const updatedTodos = this.state.todos.map(item => ({ ...item, completed: true }))
-          this.setState({
-            todos: updatedTodos,
-          })
+          const newState = { todos: updatedTodos }
+          this.updateState(newState);
         }
       }
 
       editTodo = (id, value) => {
         this.setState({ todos: this.state.todos.map(todo => (todo.id === id ? { ...todo, value } : todo))})
       }
-
-      filterCompleted = () => {
-        this.setState({ type: 'completed' })
-      }
-
-      filterAll = () => {
-        this.setState({ type: 'all' })
-      }
-
-      filterActive = () => {
-        this.setState({ type: 'active' })
+ 
+      filterTodosType = e => {
+        this.setState({ type: e.target.getAttribute('data-type')})
       }
 
       deleteCompletedTodo = () => {
@@ -117,11 +114,9 @@ export class Root extends React.Component {
                {
                 this.state.todos.length ? 
                     <Footer 
-                        updateCounter={this.updateCounter}
-                        filterCompleted={this.filterCompleted}
-                        filterAll={this.filterAll}
+                        counter={this.state.counter}
+                        filterTodosType={this.filterTodosType}
                         deleteCompletedTodo={this.deleteCompletedTodo}
-                        filterActive={this.filterActive}
                         todos={this.state.todos}
                     /> : null
                 }

@@ -2,11 +2,9 @@ import React from "react";
 
 export class Form extends React.Component {
     
-
     render() {
         return (
             <div className="todo-form">
-
                     { 
                         this.props.todosLength 
                         ?   <i 
@@ -20,10 +18,9 @@ export class Form extends React.Component {
                         type="text" 
                         placeholder="What needs to be done?"
                         value={this.props.newItemValue}
-                        onChange={e => this.props.updateItemValue(e.target.value)}
-                        onKeyPress = {e => this.props.addItem(e)}
+                        onChange={this.props.updateItemValue}
+                        onKeyPress = {this.props.addItem}
                     />
-                    
             </div>
         )
     }
