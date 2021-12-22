@@ -14,13 +14,8 @@ export class Root extends React.Component {
         isAllTodosCompleted: false
       }
 
-<<<<<<< HEAD
-      updateItemValue = newValue => {
-        this.setState({ newItemValue: newValue }) 
-=======
       updateItemValue = e => {
         this.setState({ newItemValue: e.target.value })
->>>>>>> bf36b4d901fd804c3f9ee59bb8b7ee0cdaec72db
       }
        
       addItem = (e) => {
