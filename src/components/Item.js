@@ -1,10 +1,16 @@
 import React from 'react'
+import { EventEmitter } from '../EventEmmiter';
 
 export class Item extends React.Component {
 
-    state = {
-        editing: false,
-        newValue: this.props.task.value,
+    constructor(props) {
+        super(props);
+        this.eventEmitter = EventEmitter.getInstance();
+
+        this.state = {
+            editing: false,
+            newValue: this.props.task.value,
+        }
     }
 
     onDoubleClick = () => {
@@ -17,21 +23,25 @@ export class Item extends React.Component {
 
     onInputKeyPress = e => {
         if(e.key === 'Enter') {
-            this.onBlur(e);
+            this.onBlur();
         }
     }
 
     onBlur = () => {
-        this.props.editTodo(this.props.task.id, this.state.newValue);
-        this.setState({ editing: false });
+        if(this.state.newValue.trim().length !== 0) {
+            this.eventEmitter.emit('editTodo', this.props.task.id, this.state.newValue);
+            this.setState({ editing: false });
+        } else {
+            this.eventEmitter.emit('removeItem', this.props.task.id)
+        }
     }
 
     onCheckboxChange = () => {
-        this.props.checkboxHandler(this.props.task.id);
+        this.eventEmitter.emit('checkboxHandler', this.props.task.id);
     } 
 
     deleteItem = id => {
-        this.props.removeItem(id)
+        this.eventEmitter.emit('removeItem', this.props.task.id);
     }
     
     render() {
@@ -70,7 +80,7 @@ export class Item extends React.Component {
                         {this.props.task.value}
                     </p>
 
-                    <button onClick={() => this.deleteItem(this.props.task.id)} className='delete'></button>
+                    <button onClick={this.deleteItem} className='delete'></button>
                     
                 </li> 
             )

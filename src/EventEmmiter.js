@@ -1,6 +1,13 @@
 export class EventEmitter {
+    static instance
+    static getInstance() {
+      if (!EventEmitter.instance) {
+        EventEmitter.instance = new EventEmitter()
+      }
+      return EventEmitter.instance
+    }
     constructor() {
-      this.events = {};
+      this.events = {}
     }
     on(event, listener) {
         if (typeof this.events[event] !== 'object') {
