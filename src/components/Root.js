@@ -14,7 +14,6 @@ export class Root extends React.Component {
     this.eventEmitter.on('checkboxHandler', id => this.checkboxHandler(id));
     this.eventEmitter.on('editTodo', (id, value) => this.editTodo(id, value));
     this.eventEmitter.on('filterTodosType', e => this.filterTodosType(e));
-    this.eventEmitter.on('filterTodosType', e => this.filterTodosType(e));
     this.eventEmitter.on('deleteCompletedTodo', () => this.deleteCompletedTodo());
     this.eventEmitter.on('handleAllCompleted', () => this.handleAllCompleted());
 
