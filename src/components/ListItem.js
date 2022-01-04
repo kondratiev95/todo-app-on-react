@@ -6,7 +6,7 @@ export class ListItem extends React.Component {
     return (
       <ul className="todo-list">
         {this.props.todos.map((task) => (
-          <Item task={task} key={task.id} />
+          <Item task={task} key={task._id} />
         ))}
       </ul>
     );
