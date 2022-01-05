@@ -1,5 +1,6 @@
 import React from "react";
 import { EventEmitter } from "../EventEmmiter";
+import { TodoContext } from "../context";
 
 export class Footer extends React.Component {
     constructor() {
@@ -12,7 +13,8 @@ export class Footer extends React.Component {
     }
      
     componentDidUpdate() {
-        const isCompletedItem = this.props.todos.some(todo => todo.completed)
+        const todos = this.context.store.todos;
+        const isCompletedItem = todos.some(todo => todo.completed)
         if (this.state.isTodoCompleted !== isCompletedItem) {
             this.setState({
                 isTodoCompleted: isCompletedItem,
@@ -29,7 +31,7 @@ export class Footer extends React.Component {
     }
 
     render() {
-        let { counter } = this.props;
+        let { store: { counter } } = this.context;
         return (
             <div className='todo-footer'>
                 <div className="counter">{`${counter} ${counter === 1 ? 'item' : 'items'} left`}</div>
@@ -51,3 +53,4 @@ export class Footer extends React.Component {
         )
     }
 }
+Footer.contextType = TodoContext;

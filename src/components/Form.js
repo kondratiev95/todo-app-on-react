@@ -1,5 +1,6 @@
 import React from "react";
 import { EventEmitter } from "../EventEmmiter";
+import { TodoContext } from "../context";
 
 export class Form extends React.Component {
     constructor(props) {
@@ -20,12 +21,13 @@ export class Form extends React.Component {
     }
     
     render() {
+        const { store } = this.context
         return (
             <div className="todo-form">
                 { 
-                    this.props.todosLength 
+                    store.todos.length
                     ?   <i 
-                            className={this.props.isAllTodosCompleted ? 'fas fa-angle-down dark-opacity' : 'fas fa-angle-down'} 
+                            className={store.isAllTodosCompleted ? 'fas fa-angle-down dark-opacity' : 'fas fa-angle-down'} 
                             onClick={this.handleAllCompleted}>
                         </i> 
                     : null
@@ -33,7 +35,7 @@ export class Form extends React.Component {
                 <input 
                     type="text" 
                     placeholder="What needs to be done?"
-                    value={this.props.newItemValue}
+                    value={store.newItemValue}
                     onChange={this.updateItemValue}
                     onKeyPress={this.addTodo}
                 />
@@ -41,3 +43,4 @@ export class Form extends React.Component {
         )
     }
 }
+Form.contextType = TodoContext;
