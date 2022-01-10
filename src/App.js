@@ -9,7 +9,7 @@ export class App extends React.Component {
     return (
       <div className='Todo-App'>
         <h1>todos</h1>
-        <Root/>
+            <Root/>
       </div>
     )
   }

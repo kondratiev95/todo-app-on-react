@@ -26,7 +26,8 @@ export const addData = async (data) => {
     } catch(error) {
         console.log('add-data:', error);
     }
-}
+} 
+
 export const deleteItem = async (data) => {
     try {
         const response = await fetch(`${BASE_URL }${ENDPOINTS.removeItem}`, postParams(data));

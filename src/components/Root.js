@@ -12,8 +12,10 @@ import {
   changeTodo,
   toggleAll
 } from "../todoAPI";
+import { TodoProvider } from "../context";
 
 export class Root extends React.Component {
+
   constructor(props) {
     super(props);
     this.eventEmitter = EventEmitter.getInstance();
@@ -31,10 +33,11 @@ export class Root extends React.Component {
       todos: [],
       counter: 0,
       type: 'all',
-      isAllTodosCompleted: false
+      isAllTodosCompleted: false,
+      error: null
     }
   }
-
+   
   componentDidMount() {
     getData().then(data => {
       const newState = { todos: data, newItemValue: '' };
@@ -100,37 +103,20 @@ export class Root extends React.Component {
   }
 
   deleteCompletedTodo = () => {
-      deleteCompleted().then(data => {
-        this.setState({ todos: data , isAllTodosCompleted: false});
-      })
-  }
-
-  filterTodos = () => {
-    if(this.state.type === 'completed') {
-        return this.state.todos.filter(todo => todo.completed);
-    } else if(this.state.type === 'active') {
-        return this.state.todos.filter(todo => todo.completed === false);
-    } else {
-        return this.state.todos;
-    }
+    deleteCompleted().then(data => {
+      this.setState({ todos: data , isAllTodosCompleted: false});
+    })
   }
 
   render() {
+    const store = this.state;
     return (
       <div className="todo-container">
-        <Form 
-            newItemValue={this.state.newItemValue}
-            todosLength={this.state.todos.length}
-            isAllTodosCompleted={this.state.isAllTodosCompleted}
-        />
-        <ListItem todos={this.filterTodos()} />
-        { 
-          this.state.todos.length ? 
-          <Footer 
-              counter={this.state.counter}
-              todos={this.state.todos}
-          /> : null
-        }
+            <TodoProvider value={store}>
+              <Form/>
+              <ListItem/>
+              { this.state.todos.length ? <Footer/> : null }
+            </TodoProvider>
       </div>
     );  
   }
