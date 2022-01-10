@@ -29,19 +29,19 @@ export class Item extends React.Component {
 
     onBlur = () => {
         if(this.state.newValue.trim().length !== 0) {
-            this.eventEmitter.emit('editTodo', this.props.task.id, this.state.newValue);
+            this.eventEmitter.emit('editTodo', this.props.task._id, this.state.newValue);
             this.setState({ editing: false });
         } else {
-            this.eventEmitter.emit('removeItem', this.props.task.id)
+            this.eventEmitter.emit('removeItem', this.props.task._id)
         }
     }
 
     onCheckboxChange = () => {
-        this.eventEmitter.emit('checkboxHandler', this.props.task.id);
+        this.eventEmitter.emit('checkboxHandler', this.props.task._id);
     } 
 
-    deleteItem = id => {
-        this.eventEmitter.emit('removeItem', this.props.task.id);
+    deleteItem = () => {
+        this.eventEmitter.emit('removeItem', this.props.task._id);
     }
     
     render() {
@@ -71,7 +71,7 @@ export class Item extends React.Component {
                         checked={this.props.task.completed}
                     />
 
-                    <label htmlFor={this.props.task.id} onClick={this.onCheckboxChange}></label>
+                    <label htmlFor={this.props.task._id} onClick={this.onCheckboxChange}></label>
 
                     <p 
                         className={this.props.task.completed ? 'todo-content toggle-checkbox' : 'todo-content'}

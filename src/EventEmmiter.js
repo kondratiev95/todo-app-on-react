@@ -33,6 +33,6 @@ export class EventEmitter {
       const remove = this.on(event, (...args) => {
           remove();
           listener.apply(this, args);
-      });
+      })
     }
-  };
+  }
