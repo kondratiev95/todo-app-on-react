@@ -1,5 +1,6 @@
 import React from 'react'
 import { EventEmitter } from '../EventEmmiter';
+import EditInput from './EditInput';
 
 export class Item extends React.Component {
 
@@ -14,9 +15,12 @@ export class Item extends React.Component {
     }
 
     onDoubleClick = () => {
+         
         this.setState({ editing: true });
     }
 
+
+ 
     onInput = e => {
         this.setState({ newValue: e.target.value });
     }
@@ -28,7 +32,7 @@ export class Item extends React.Component {
     }
 
     onBlur = () => {
-        if(this.state.newValue.trim().length !== 0) {
+        if(this.state.newValue.trim() !== 0) {
             this.eventEmitter.emit('editTodo', this.props.task._id, this.state.newValue);
             this.setState({ editing: false });
         } else {
@@ -48,18 +52,13 @@ export class Item extends React.Component {
         return (
             this.state.editing 
             ? (
-                <li className="edit-item">
-                    <input 
-                        type="text" 
-                        className="input-edit"
-                        autoFocus={true}
-                        value={this.state.newValue}
-                        placeholder={this.props.task.value}
-                        onChange={this.onInput}
-                        onKeyDown={this.onInputKeyPress}
-                        onBlur={this.onBlur}
-                    />
-                </li>
+                <EditInput 
+                    newValue={this.state.newValue} 
+                    value={this.props.task.value} 
+                    onInput={this.onInput}
+                    onBlur={this.onBlur}
+                    onInputKeyPress={this.onInputKeyPress}
+                />
             ) : (
                 <li className='todo-item'>
 

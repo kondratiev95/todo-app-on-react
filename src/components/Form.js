@@ -21,7 +21,9 @@ export class Form extends React.Component {
     }
     
     render() {
-        const { store } = this.context
+        const  store  = this.context
+
+        console.log(this.context)
         return (
             <div className="todo-form">
                 { 
@@ -38,6 +40,7 @@ export class Form extends React.Component {
                     value={store.newItemValue}
                     onChange={this.updateItemValue}
                     onKeyPress={this.addTodo}
+                    autoFocus
                 />
             </div>
         )

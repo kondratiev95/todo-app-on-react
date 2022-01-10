@@ -137,6 +137,12 @@ h1 {
   border-radius: 3px;
 }
 
+.focus-btn {
+  border: 1px solid black;
+  padding: 4px;
+  border-radius: 3px;
+}
+
 .clear-completed {
   margin-left: 10px;
   border: none;

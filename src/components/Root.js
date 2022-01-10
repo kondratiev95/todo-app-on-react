@@ -34,7 +34,7 @@ export class Root extends React.Component {
       counter: 0,
       type: 'all',
       isAllTodosCompleted: false,
-      filterArray: []
+      error: null
     }
   }
    
@@ -44,7 +44,6 @@ export class Root extends React.Component {
       this.updateState(newState);
     });
   }
- 
 
   updateItemValue = (e) => {
     this.setState({ newItemValue: e.target.value });
@@ -109,29 +108,15 @@ export class Root extends React.Component {
     })
   }
 
-  filterTodos = () => {
-    if(this.state.type === 'completed') {
-        // this.setState({filterArray: [...this.state.todos.filter(todo => todo.completed)]});
-        return this.state.todos.filter(todo => todo.completed)
-    } else if(this.state.type === 'active') {
-        // this.setState({filterArray: [...this.state.todos.filter(todo => todo.completed === false)]});
-        return this.state.todos.filter(todo => todo.completed === false)
-    } else {
-        // this.setState({filterArray: [...this.state.todos]});
-        return this.state.todos
-    }
-  }
-
   render() {
     const store = this.state;
-    const filteredTodos = this.filterTodos();
     return (
       <div className="todo-container">
-        <TodoProvider value={{store, filteredTodos}}>
-          <Form/>
-          <ListItem/>
-          { this.state.todos.length ? <Footer/> : null }
-        </TodoProvider>
+            <TodoProvider value={store}>
+              <Form/>
+              <ListItem/>
+              { this.state.todos.length ? <Footer/> : null }
+            </TodoProvider>
       </div>
     );  
   }

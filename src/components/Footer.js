@@ -11,10 +11,18 @@ export class Footer extends React.Component {
             isTodoCompleted: false,
         }
     }
+
+    componentDidMount() {
+        const todos = this.context.todos;
+        const isCompletedItem = todos.some(todo => todo.completed);
+        if(isCompletedItem) {
+            this.setState({ isCompletedItem: true })
+        }
+    }
      
     componentDidUpdate() {
-        const todos = this.context.store.todos;
-        const isCompletedItem = todos.some(todo => todo.completed)
+        const todos = this.context.todos;
+        const isCompletedItem = todos.some(todo => todo.completed);
         if (this.state.isTodoCompleted !== isCompletedItem) {
             this.setState({
                 isTodoCompleted: isCompletedItem,
@@ -31,14 +39,32 @@ export class Footer extends React.Component {
     }
 
     render() {
-        let { store: { counter } } = this.context;
+        let { counter, type } = this.context;
         return (
             <div className='todo-footer'>
                 <div className="counter">{`${counter} ${counter === 1 ? 'item' : 'items'} left`}</div>
                 <div className="filter-btns">
-                    <button data-type='all' onClick={this.filterType}>all</button>
-                    <button data-type='active' onClick={this.filterType}>active</button>
-                    <button data-type='completed' onClick={this.filterType}>completed</button>
+                    <button 
+                        data-type='all' 
+                        onClick={this.filterType} 
+                        className={type === 'all' ? 'focus-btn' : null}
+                    >
+                        all
+                    </button>
+                    <button 
+                        data-type='active' 
+                        onClick={this.filterType} 
+                        className={type === 'active' ? 'focus-btn' : null}
+                    >
+                        active
+                    </button>
+                    <button 
+                        data-type='completed' 
+                        onClick={this.filterType} 
+                        className={type === 'completed' ? 'focus-btn' : null}
+                    >
+                        completed
+                    </button>
                 </div>
                 {
                     this.state.isTodoCompleted
